@@ -2,10 +2,38 @@
  * Fires whenever the bot joins a guild (server).
  */
 import { Client } from "discord.js";
-import { getConfig } from "../utils";
+import { ChannelTypes } from "discord.js/typings/enums";
+import BotConfig from "../botConfig";
 
 export default (client: Client): void => {
-  client.on("guildCreate", function (guild) {
-    let config = getConfig();
+  console.log("registering listener for guildCreate");
+  client.on("guildCreate", async function (guild) {
+    // when we join for the first time, attempt to create a voice channel and get its ID
+    console.log(`Joined ${guild.name}`);
+
+    if (guild.me?.permissions.has("MANAGE_CHANNELS")) {
+      console.log("Manage channels permission is available");
+      const channelParent = guild.channels.cache.find(channel => 
+        channel.name.toLowerCase().startsWith("stats") || channel.name.toLowerCase() === "voice"
+      )
+      const channel = await guild.channels.create("Weather: ", {
+        type: ChannelTypes.GUILD_VOICE,
+        parent: channelParent?.id,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone,
+            allow: ["VIEW_CHANNEL"],
+            deny: ["SEND_MESSAGES", "READ_MESSAGE_HISTORY", "CONNECT"],
+          },
+        ],
+      });
+      console.log("Created channel " + channel.id);
+      const configuration = BotConfig.getInstance().config;
+      configuration.set(guild.id, {
+        channelId: channel.id,
+        currentSeason: "spring",
+      });
+      BotConfig.getInstance().save(configuration);
+    }
   });
 };

@@ -1,4 +1,4 @@
 import { Command } from "./command";
-import { Hello, Season } from "./commands/";
+import { Season, UpdateWeather } from "./commands/";
 
-export const Commands: Command[] = [Season];
+export const Commands: Command[] = [Season, UpdateWeather];

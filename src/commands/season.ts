@@ -25,30 +25,3 @@ export const Season: Command = {
     await interaction.followUp({ ephemeral: true, content });
   },
 };
-
-// {
-//   type: 3,
-//   name: "seasons",
-//   choices: [
-//     {
-//       name: "Spring",
-//       value: "spring",
-//     },
-//     {
-//       name: "Summer",
-//       value: "summer",
-//     },
-//   ],
-// },
-
-// let thing: ApplicationCommandOptionData = {
-//   name: "season",
-//   description: "Sets the current season",
-//   type: "STRING",
-//   choices: [
-//     { name: "Spring", value: "season_spring" },
-//     { name: "Summer", value: "season_summer" },
-//     { name: "Autumn", value: "season_autumn" },
-//     { name: "Winter", value: "season_winter" },
-//   ],
-// };

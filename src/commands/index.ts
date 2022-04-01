@@ -1,2 +1,2 @@
-export * from "./hello";
 export * from "./season";
+export * from "./weather";

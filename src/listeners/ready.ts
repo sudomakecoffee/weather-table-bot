@@ -2,6 +2,7 @@ import { Client } from "discord.js";
 import { Commands } from "../commands";
 
 export default (client: Client): void => {
+  console.log("registering listener for ready");
   client.on("ready", async () => {
     if (!client.user || !client.application) {
       return;
@@ -12,6 +13,8 @@ export default (client: Client): void => {
       console.log(`\t${command.name}`);
     });
     await client.application.commands.set(Commands);
+
+    
 
     console.log(`${client.user.username} online ... All systems nominal`);
   });
