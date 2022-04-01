@@ -1,6 +1,9 @@
 import { Client, Intents } from "discord.js";
 import dotenv from "dotenv";
 
+import ready from "./listeners/ready";
+import interactionCreate from "./listeners/interactionCreate";
+
 dotenv.config();
 
 const client = new Client({
@@ -10,5 +13,8 @@ const client = new Client({
     Intents.FLAGS.GUILD_VOICE_STATES,
   ],
 });
+
+ready(client);
+interactionCreate(client);
 
 client.login(process.env.TOKEN);
