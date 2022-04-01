@@ -20,7 +20,7 @@ export default class BotConfig {
     return BotConfig.instance;
   }
 
-  public get config() { 
+  public get config() {
     if (!this.currentConfig) {
       this.currentConfig = BotConfig.getInstance().load();
     }
@@ -37,8 +37,7 @@ export default class BotConfig {
       for (let key in json) {
         config.set(key, json[key]);
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.warn("No config data found, loading defaults");
     }
 
@@ -51,8 +50,7 @@ export default class BotConfig {
       const objectified = Object.fromEntries(config);
 
       writeFileSync(file, JSON.stringify(objectified), { encoding: "utf8" });
-    }
-    catch(e) {
+    } catch (e) {
       console.error("Couldn't write config!");
     }
   }

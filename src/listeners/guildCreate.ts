@@ -12,10 +12,11 @@ export default (client: Client): void => {
     console.log(`Joined ${guild.name}`);
 
     if (guild.me?.permissions.has("MANAGE_CHANNELS")) {
-      console.log("Manage channels permission is available");
-      const channelParent = guild.channels.cache.find(channel => 
-        channel.name.toLowerCase().startsWith("stats") || channel.name.toLowerCase() === "voice"
-      )
+      const channelParent = guild.channels.cache.find(
+        (channel) =>
+          channel.name.toLowerCase().startsWith("stats") ||
+          channel.name.toLowerCase() === "voice"
+      );
       const channel = await guild.channels.create("Weather: ", {
         type: ChannelTypes.GUILD_VOICE,
         parent: channelParent?.id,
@@ -27,7 +28,6 @@ export default (client: Client): void => {
           },
         ],
       });
-      console.log("Created channel " + channel.id);
       const configuration = BotConfig.getInstance().config;
       configuration.set(guild.id, {
         channelId: channel.id,

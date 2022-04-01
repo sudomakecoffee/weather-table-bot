@@ -12,15 +12,23 @@ export const UpdateWeather: Command = {
 
     if (interaction.guild?.me?.permissions.has("MANAGE_CHANNELS")) {
       await updateWeather(client, guildId);
-      await interaction.followUp({ ephemeral: true, content: "Weather manually updated" });
+      await interaction.followUp({
+        ephemeral: true,
+        content: "Weather manually updated",
+      });
       return;
     }
-    interaction.reply({ ephemeral: true, content: "Insufficient permissions to update weather"});
+    interaction.reply({
+      ephemeral: true,
+      content: "Insufficient permissions to update weather",
+    });
   },
 };
 
-export async function updateWeather(client: Client, guildId: string): Promise<boolean> {
-  console.log("updateWeather running");
+export async function updateWeather(
+  client: Client,
+  guildId: string
+): Promise<boolean> {
   const theGuild = client.guilds.cache.get(guildId);
   if (!theGuild) {
     console.error(`Couldn't get reference to guild ${guildId}`);
@@ -28,7 +36,6 @@ export async function updateWeather(client: Client, guildId: string): Promise<bo
   }
 
   const config = BotConfig.getInstance().config.get(guildId);
-  console.log("got config for guildId " + guildId);
   const season = config?.currentSeason ?? "";
   const channelId = config?.channelId ?? "";
 
@@ -37,14 +44,11 @@ export async function updateWeather(client: Client, guildId: string): Promise<bo
     return false;
   }
 
-  console.log("valid season, valid channel");
   if (theGuild?.me?.permissions.has("MANAGE_CHANNELS")) {
-    console.log("we have permissions");
     const weather = WeatherConfig.getInstance().config.get(season);
     const roll = 1 + Math.floor(Math.random() * 100);
 
     const toBe = weather?.find((w) => roll <= w.cutoff)?.weather;
-    console.log(`weather is going to be ${toBe}`);
 
     const channel = theGuild?.channels.cache.get(channelId);
     if (channel) {

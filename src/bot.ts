@@ -10,29 +10,27 @@ import { updateWeather } from "./commands/weather";
 dotenv.config();
 
 const client = new Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-  ],
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
 let waitForIt: NodeJS.Timeout;
 async function setupTimer() {
   let runTime = new Date();
-  runTime.setMinutes(runTime.getMinutes() + 1);
-  //runTime.setDate(runTime.getDate() + 1);
-  let timeLeft = runTime.getTime() - new Date().getTime();
-  
-  waitForIt = setTimeout(async function tick() {
-    console.log("tick");
+
+  runTime.setHours(8, 0, 0, 0);
+  if (runTime < new Date()) {
     runTime.setDate(runTime.getDate() + 1);
-    console.table(BotConfig.getInstance().config.keys());
+    console.log("Today's timer has passed, aiming for tomorrow");
+  }
+  let timeLeft = runTime.getTime() - new Date().getTime();
+
+  waitForIt = setTimeout(async function tick() {
     for (let key of BotConfig.getInstance().config.keys()) {
-      console.log("running key " + key); 
       updateWeather(client, key);
     }
+    runTime.setDate(runTime.getDate() + 1);
     timeLeft = runTime.getTime() - new Date().getTime();
-    console.log(`next run at ${ timeLeft / 1000 / 60 } minutes`);
+    console.log("Tick done, next run time " + runTime.toString());
     waitForIt = setTimeout(tick, timeLeft);
   }, timeLeft);
 }
@@ -55,4 +53,6 @@ guildCreate(client);
 process.on("SIGINT", logout);
 
 client.login(process.env.TOKEN);
-setupTimer();
+client.on("ready", () => {
+  setupTimer();
+});
