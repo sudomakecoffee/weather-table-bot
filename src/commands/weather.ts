@@ -52,7 +52,7 @@ export async function updateWeather(
 
     const channel = theGuild?.channels.cache.get(channelId);
     if (channel) {
-      await channel.setName(`Weather: ${toBe?.toUpperCase()}`);
+      await channel.setName(`Weather: ${toBe}`);
     }
     return true;
   }
