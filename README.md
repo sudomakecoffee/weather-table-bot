@@ -1,2 +1,3 @@
 # weather-table-bot
-Rolls a weather table once a day.
+
+Discord bot that rolls a weather table once a day.
