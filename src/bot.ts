@@ -53,6 +53,4 @@ guildCreate(client);
 process.on("SIGINT", logout);
 
 client.login(process.env.TOKEN);
-// client.on("ready", () => {
-//   setupTimer();
-// });
+setupTimer();
