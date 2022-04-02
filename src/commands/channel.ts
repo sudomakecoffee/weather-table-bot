@@ -11,16 +11,24 @@ export const SetChannel: Command = {
       name: "id",
       description: "Numeric channel ID",
       type: "STRING",
-      required: true
-    }
+      required: true,
+    },
   ],
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     const guildId = interaction.guildId ?? "";
-    const channelId = interaction.options.get("channelId")?.value ?? "unknown";
-    const config = BotConfig.getInstance().config.get(guildId) ?? { channelId: "", currentSeason: ""};
+    const channelId = interaction.options.get("id")?.value ?? "unknown";
+    const config = BotConfig.getInstance().config.get(guildId) ?? {
+      channelId: "",
+      currentSeason: "",
+    };
 
     config.channelId = channelId as string;
     BotConfig.getInstance().config.set(guildId, config);
     BotConfig.getInstance().save();
-  }
-}
+
+    interaction.followUp({
+      ephemeral: true,
+      content: `Channel set to ${channelId}`,
+    });
+  },
+};
