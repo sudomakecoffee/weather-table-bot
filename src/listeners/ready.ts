@@ -1,9 +1,8 @@
 import { Client } from "discord.js";
-import BotConfig from "src/botConfig";
+import BotConfig from "../botConfig";
 import { Commands } from "../commands";
 
 export default (client: Client): void => {
-  console.log("registering listener for ready");
   client.on("ready", async () => {
     if (!client.user || !client.application) {
       return;
@@ -14,19 +13,14 @@ export default (client: Client): void => {
 
     const config = BotConfig.getInstance().config;
     if (config.size > 0) {
-      console.log(`checking commands in existing servers`);
-      Commands.forEach((command) => {
-        console.log(`\t${command.name}`);
-      });
-
-      for (let guildId in config.keys()) {
-        Commands.forEach(async (command) => {
-          if (!client.application?.commands.cache.has(command.name)) {
-            console.log(`\tregistering ${command.name} in ${guildId}`);
-            await client.application?.commands.create(command, guildId);
+      for (let guildId of config.keys()) {
+        const guild = client.guilds.cache.get(guildId);
+        for (let command of Commands) {
+          if (!guild?.commands.cache.has(command.name)) {
+            await guild?.commands.create(command);
           }
-        });
-        await client.application?.commands.set(Commands, guildId);
+        }
+        // await client.application?.commands.set(Commands, guildId);
       }
     }
 
