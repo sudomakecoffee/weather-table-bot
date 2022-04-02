@@ -1,4 +1,6 @@
 import { BaseCommandInteraction, Client } from "discord.js";
+import BotConfig from "../botConfig";
+import { BotConfigData } from "../botConfigData";
 import { Command } from "../command";
 
 export const Season: Command = {
@@ -22,6 +24,16 @@ export const Season: Command = {
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     const choice = interaction.options.get("season")?.value ?? "unknown";
     const content = `Season has been updated to ${choice}`;
+
+    const guildId = interaction.guildId as string;
+    const config = BotConfig.getInstance().config;
+    const guildConfig = config.get(guildId) as BotConfigData;
+
+    guildConfig.currentSeason = choice as string;
+    config.set(guildId, guildConfig);
+
+    BotConfig.getInstance().save(config);
+
     await interaction.followUp({ ephemeral: true, content });
   },
 };
