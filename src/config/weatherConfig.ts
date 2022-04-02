@@ -14,7 +14,7 @@ export default class WeatherConfig {
 
   static getInstance(): WeatherConfig {
     if (!WeatherConfig._instance) {
-      const file = "weatherConf.json";
+      const file = "../weatherConf.json";
       WeatherConfig._instance = new WeatherConfig(file);
     }
     return WeatherConfig._instance;
@@ -37,8 +37,7 @@ export default class WeatherConfig {
       for (let key in json) {
         config.set(key, json[key]);
       }
-    }
-    catch (e: any) {
+    } catch (e: any) {
       console.error("Error loading weather config, using default");
       console.error(e.message ?? "No error message found");
     }
