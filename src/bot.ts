@@ -26,7 +26,9 @@ async function setupTimer() {
 
   waitForIt = setTimeout(async function tick() {
     for (let key of BotConfig.getInstance().config.keys()) {
-      updateWeather(client, key);
+      updateWeather(client, key).catch((err) => {
+        console.error(`Couldn't update ${key}, likely permissions issue`);
+      });
     }
     runTime.setDate(runTime.getDate() + 1);
     timeLeft = runTime.getTime() - new Date().getTime();
