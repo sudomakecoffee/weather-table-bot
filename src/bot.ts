@@ -38,10 +38,10 @@ async function setupTimer() {
 async function logout() {
   console.log("process exit detected, killing client connection");
   if (client.user && client.application) {
-    // if (waitForIt) {
-    //   clearTimeout(waitForIt);
-    // }
-    await client.application.commands.set([]);
+    if (waitForIt) {
+      clearTimeout(waitForIt);
+    }
+
     client.destroy();
   }
 }
