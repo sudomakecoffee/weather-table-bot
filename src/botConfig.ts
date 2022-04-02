@@ -15,7 +15,7 @@ export default class BotConfig {
   static getInstance(): BotConfig {
     if (!BotConfig.instance) {
       const file = "botConf.json";
-      BotConfig.instance = new BotConfig(file); 
+      BotConfig.instance = new BotConfig(file);
     }
     return BotConfig.instance;
   }
@@ -49,7 +49,10 @@ export default class BotConfig {
       const file = join(__dirname, this.configName);
       const objectified = Object.fromEntries(config);
 
-      writeFileSync(file, JSON.stringify(objectified), { encoding: "utf8" });
+      // pretty-print the config file
+      writeFileSync(file, JSON.stringify(objectified, null, 2), {
+        encoding: "utf8",
+      });
     } catch (e) {
       console.error("Couldn't write config!");
     }
