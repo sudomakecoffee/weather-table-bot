@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import ready from "./listeners/ready";
 import interactionCreate from "./listeners/interactionCreate";
 import guildCreate from "./listeners/guildCreate";
-import BotConfig from "./botConfig";
+import BotConfig from "./config/botConfig";
 import { updateWeather } from "./commands/weather";
 
 dotenv.config();

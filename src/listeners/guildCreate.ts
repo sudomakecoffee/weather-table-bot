@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 import { Commands } from "../commands";
-import BotConfig from "../botConfig";
+import BotConfig from "../config/botConfig";
 
 export default (client: Client): void => {
   /**

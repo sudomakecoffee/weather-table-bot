@@ -1,6 +1,6 @@
 import { BaseCommandInteraction, Client } from "discord.js";
-import BotConfig from "../botConfig";
-import { BotConfigData } from "../botConfigData";
+import BotConfig from "../config/botConfig";
+import { BotConfigData } from "../config/botConfigData";
 import { Command } from "../command";
 
 export const Season: Command = {

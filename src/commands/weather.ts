@@ -1,6 +1,6 @@
 import { BaseCommandInteraction, Client, GuildBasedChannel, GuildMember } from "discord.js";
-import BotConfig from "../botConfig";
-import WeatherConfig from "../weatherConfig";
+import BotConfig from "../config/botConfig";
+import WeatherConfig from "../config/weatherConfig";
 import { Command } from "../command";
 
 export const UpdateWeather: Command = {

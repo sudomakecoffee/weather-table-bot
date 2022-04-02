@@ -1,5 +1,5 @@
 import { BaseCommandInteraction, Client } from "discord.js";
-import BotConfig from "../botConfig";
+import BotConfig from "../config/botConfig";
 import { Command } from "../command";
 
 export const SetChannel: Command = {

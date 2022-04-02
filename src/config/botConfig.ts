@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
-import { BotConfigData } from "./botConfigData";
+import { BotConfigData } from "../config/botConfigData";
 
 export default class BotConfig {
   private static instance: BotConfig;
