@@ -15,7 +15,7 @@ export default class BotConfig {
   static getInstance(): BotConfig {
     if (!BotConfig.instance) {
       const file = "botConf.json";
-      BotConfig.instance = new BotConfig(file);
+      BotConfig.instance = new BotConfig(file); 
     }
     return BotConfig.instance;
   }

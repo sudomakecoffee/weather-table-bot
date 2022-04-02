@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, Client } from "discord.js";
+import { BaseCommandInteraction, Client, GuildMember } from "discord.js";
 import BotConfig from "../botConfig";
 import WeatherConfig from "../weatherConfig";
 import { Command } from "../command";
@@ -18,7 +18,7 @@ export const UpdateWeather: Command = {
       });
       return;
     }
-    interaction.reply({
+    interaction.followUp({
       ephemeral: true,
       content: "Insufficient permissions to update weather",
     });
@@ -44,17 +44,21 @@ export async function updateWeather(
     return false;
   }
 
-  if (theGuild?.me?.permissions.has("MANAGE_CHANNELS")) {
-    const weather = WeatherConfig.getInstance().config.get(season);
-    const roll = 1 + Math.floor(Math.random() * 100);
+  const member = theGuild.me as GuildMember;
+  const channelPerms = theGuild.channels.cache.
+        get(channelId)?.permissionsFor(member, false);
 
-    const toBe = weather?.find((w) => roll <= w.cutoff)?.weather;
+  // if (theGuild?.me?.permissions.has("MANAGE_CHANNELS")) {
+  //   const weather = WeatherConfig.getInstance().config.get(season);
+  //   const roll = 1 + Math.floor(Math.random() * 100);
 
-    const channel = theGuild?.channels.cache.get(channelId);
-    if (channel) {
-      await channel.setName(`Weather: ${toBe}`);
-    }
-    return true;
-  }
+  //   const toBe = weather?.find((w) => roll <= w.cutoff)?.weather;
+
+  //   const channel = theGuild?.channels.cache.get(channelId);
+  //   if (channel) {
+  //     await channel.setName(`Weather: ${toBe}`);
+  //   }
+  //   return true;
+  // }
   return false;
 }

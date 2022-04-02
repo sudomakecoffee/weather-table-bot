@@ -38,9 +38,9 @@ async function setupTimer() {
 async function logout() {
   console.log("process exit detected, killing client connection");
   if (client.user && client.application) {
-    if (waitForIt) {
-      clearTimeout(waitForIt);
-    }
+    // if (waitForIt) {
+    //   clearTimeout(waitForIt);
+    // }
     await client.application.commands.set([]);
     client.destroy();
   }
@@ -53,6 +53,6 @@ guildCreate(client);
 process.on("SIGINT", logout);
 
 client.login(process.env.TOKEN);
-client.on("ready", () => {
-  setupTimer();
-});
+// client.on("ready", () => {
+//   setupTimer();
+// });
