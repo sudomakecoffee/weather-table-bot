@@ -1,7 +1,10 @@
 import { Client } from "discord.js";
 import { Commands } from "../commands";
-import BotConfig from "../config/botConfig";
 
+import BotConfig from "../config/botConfig";
+import { logger as parentLogger } from "../logger";
+
+const log = parentLogger.child({ module: "guildCreate" });
 export default (client: Client): void => {
   /**
    * Fires whenever the bot joins a guild (server).
@@ -10,6 +13,7 @@ export default (client: Client): void => {
     // when we join for the first time, create our commands
     const config = BotConfig.getInstance().config;
     if (!config.has(guild.id)) {
+      log.info(`registering ${Commands.length} commands in ${guild.name}`);
       guild.commands.set(Commands);
 
       config.set(guild.id, {

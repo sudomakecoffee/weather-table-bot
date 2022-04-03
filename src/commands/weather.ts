@@ -2,7 +2,9 @@ import { BaseCommandInteraction, Client, GuildBasedChannel, GuildMember } from "
 import BotConfig from "../config/botConfig";
 import WeatherConfig from "../config/weatherConfig";
 import { Command } from "../command";
+import { logger as parentLogger } from "../logger";
 
+const log = parentLogger.child({ module: "commandWeather" });
 export const UpdateWeather: Command = {
   name: "weather",
   description: "Manually rolls the weather for the current season",
@@ -12,6 +14,7 @@ export const UpdateWeather: Command = {
 
     if (interaction.guild?.me?.permissions.has("MANAGE_CHANNELS")) {
       await updateWeather(client, guildId).catch((reason) => {
+        log.error(`couldn't update channel name: ${reason}`);
         interaction.followUp("Error occurred, couldn't update channel name");
         return;
       });
@@ -21,6 +24,7 @@ export const UpdateWeather: Command = {
       });
       return;
     }
+    log.error(`failed due to likely insufficient permissions`);
     interaction.followUp({
       ephemeral: true,
       content: "Insufficient permissions to update weather",
@@ -31,7 +35,7 @@ export const UpdateWeather: Command = {
 export async function updateWeather(client: Client, guildId: string): Promise<boolean> {
   const theGuild = client.guilds.cache.get(guildId);
   if (!theGuild) {
-    console.error(`Couldn't get reference to guild ${guildId}`);
+    log.error(`Couldn't get reference to guild ${guildId}`);
     return false;
   }
 
@@ -40,7 +44,7 @@ export async function updateWeather(client: Client, guildId: string): Promise<bo
   const channelId = config?.channelId ?? "";
 
   if (season.length === 0 || channelId.length === 0) {
-    console.error("Couldn't update weather, no channel or season data found");
+    log.error("Couldn't update weather, no channel or season data found");
     return false;
   }
 
@@ -50,6 +54,7 @@ export async function updateWeather(client: Client, guildId: string): Promise<bo
 
     const toBe = weather?.find((w) => roll <= w.cutoff)?.weather;
 
+    log.info(`updating weather for ${guildId} to ${toBe}`);
     const channel = theGuild?.channels.cache.get(channelId) as GuildBasedChannel;
     await channel.setName(`Weather: ${toBe}`);
     return true;
